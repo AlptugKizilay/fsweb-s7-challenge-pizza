@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Order from "../components/Order";
 import {
     Nav,
@@ -6,7 +6,13 @@ import {
     NavLink,
     
   } from "reactstrap";
-const OrderPage = () => {
+const OrderPage = ({siparis}) => {
+  const [sipariss, setSipariss] = useState();
+
+  console.log("siparis orderpage " , sipariss);
+  siparis(sipariss);
+
+  /* siparis(sipariss) */
   return (
     <div>
       <div className="header">
@@ -29,7 +35,7 @@ const OrderPage = () => {
           </NavItem>
         </Nav>
       </div>
-      <Order />
+      <Order siparisss={setSipariss} />
     </div>
   );
 };
