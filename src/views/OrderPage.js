@@ -15,7 +15,7 @@ const OrderPage = ({siparis}) => {
 
   /* siparis(sipariss) */
   return (
-    <div className="d-flex flex-column mb-2 justify-content-center">
+    <div className="d-flex flex-column mb-2 justify-content-center" >
       <div className="header">
         <h1 className="text-center">Teknolojik Yemekler</h1>
         <Nav card fill justified>

@@ -16,10 +16,7 @@ const Layout = () => {
   }
 
   return (
-    <div className="main.container" style={{
-      width:"40%",
-      margin:"2rem 30%",
-    }}>
+    <div className="main.container" >
      
       <div className="page-content">
         <Routes>
