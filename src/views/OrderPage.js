@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Order from "../components/Order";
+
 import {
     Nav,
     NavItem,
@@ -14,9 +15,9 @@ const OrderPage = ({siparis}) => {
 
   /* siparis(sipariss) */
   return (
-    <div>
+    <div className="d-flex flex-column mb-2 justify-content-center">
       <div className="header">
-        <h1>Teknolojik Yemekler</h1>
+        <h1 className="text-center">Teknolojik Yemekler</h1>
         <Nav card fill justified>
           <NavItem>
             <NavLink active href="/">
