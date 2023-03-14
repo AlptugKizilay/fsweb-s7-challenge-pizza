@@ -54,7 +54,7 @@ const Order = (props) => {
   const [orderPizza, setOrderPizza] = useState({
     id: "",
     name: "",
-    price: 0,
+    price: "",
     boyut: "",
     hamur: "",
     text: "",
@@ -108,9 +108,8 @@ const Order = (props) => {
   const orderFormSchema = Yup.object().shape({
     boyut: Yup.string().required("Pizza boyutunu seçmek zorunlu"),
     hamur: Yup.string().required("Pizza hamurunu seçmek zorunlu"),
-    /* ekMalzemeler: Yup.array()
-      .length()
-      .min(4, "en az 4 seçim"), */
+    ekMalzemeler: Yup.
+      array().required().min(4,"En az 4 seçim"),
     text: Yup.string().required("Sipariş notu girin"),
     name:Yup.string().required("Hangi pizzayı yemek istersiniz")
   });
@@ -135,7 +134,9 @@ const Order = (props) => {
       });
     
   };
-
+  const removeFalse = (e) =>{
+    
+  }
   const setCheck = (e) => {
     setOrderPizza({ ...orderPizza, [e.target.name]: e.target.checked });
 
@@ -146,6 +147,7 @@ const Order = (props) => {
     } else {
       setMalzemeSayaci(malzemeSayaci - 1);
       setTotalPrice(totalPrice - perCost);
+      ekMalzemeler.pop();
     }
   };
   const changeHandler = (e) => {
@@ -175,8 +177,12 @@ const Order = (props) => {
   };
 
   useEffect(() => {
-    console.log(ekMalzemeler);
+    console.log("ekMalzemeler", ekMalzemeler);
   }, [ekMalzemeler]);
+  
+  useEffect(() => {
+    console.log("formErrors",formErrors);
+  }, [formErrors]);
 
   useEffect(() => {
     console.log(">>>>>>>>>>>>>", orderPizza);
@@ -209,7 +215,7 @@ const Order = (props) => {
             <Card
               className="mx-2"
               key={e.id}
-              for={e.id}
+              htmlFor={e.id}
               style={{
                 width: "18rem",
               }}
@@ -267,7 +273,7 @@ const Order = (props) => {
                   value="Küçük"
                   onChange={changeHandler}
                 />{" "}
-                <Label check for="size-dropdown">Küçük Boy</Label>
+                <Label check htmlFor="size-dropdown">Küçük Boy</Label>
               </FormGroup>
               <FormGroup check>
                 <Input
@@ -277,7 +283,7 @@ const Order = (props) => {
                   value="Orta"
                   onChange={changeHandler}
                 />{" "}
-                <Label check for="size-dropdown">Orta Boy</Label>
+                <Label check htmlFor="size-dropdown">Orta Boy</Label>
               </FormGroup>
               <FormGroup check>
                 <Input
@@ -287,7 +293,7 @@ const Order = (props) => {
                   value="Büyük"
                   onChange={changeHandler}
                 />{" "}
-                <Label check for="size-dropdown">Büyük Boy</Label>
+                <Label check htmlFor="size-dropdown">Büyük Boy</Label>
               </FormGroup>
               <FormFeedback>{formErrors.boyut}</FormFeedback>
             </FormGroup>
@@ -299,7 +305,7 @@ const Order = (props) => {
               <DropdownToggle caret color="ligth">
                 <strong>Hamur Seç</strong>
               </DropdownToggle>
-              <DropdownMenu ligth>
+              <DropdownMenu>
                 <DropdownItem header id="hamur-type">
                   Hamur Kalınlığı
                 </DropdownItem>
@@ -343,7 +349,7 @@ const Order = (props) => {
 
             {malzemeler.map((e, index) => {
               return (
-                <FormGroup check inline>
+                <FormGroup check inline key={index}>
                   <Input
                     type="checkbox"
                     name={e}
@@ -357,7 +363,7 @@ const Order = (props) => {
           </FormGroup>
 
           <FormGroup>
-            <Label for="special-text">Sipariş Notu</Label>
+            <Label htmlFor="special-text">Sipariş Notu</Label>
             <Input
               id="special-text"
               name="text"
