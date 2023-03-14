@@ -29,11 +29,7 @@ const OrderPage = ({siparis}) => {
               Anasayfa
             </NavLink >
           </NavItem>
-          <NavItem >
-            <NavLink active href="/pizza" className="p-3 mb-2  " style={{color: "#f6c667", fontWeight: "bolder"}}>
-              Seçenekler
-            </NavLink>
-          </NavItem>
+          
           <NavItem >
             <NavLink active href="/order-pizza" className="p-3 mb-2 " style={{color: "#f6c667", fontWeight: "bolder"}}>
               Sipariş Oluştur

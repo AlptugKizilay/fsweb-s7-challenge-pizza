@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+import Counter from "./Counter";
+import axios from "axios";
 import {
   Form,
   FormGroup,
@@ -16,12 +19,7 @@ import {
   FormFeedback,
   CardBody,
   CardSubtitle,
-  CardFooter
 } from "reactstrap";
-import Counter from "./Counter";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
 
 const Order = (props) => {
   const [pizza, setPizza] = useState([
@@ -29,39 +27,43 @@ const Order = (props) => {
       id: 1,
       name: "Galaktik",
       price: 89,
+      currency: "TL",
       sugest:
         "Galaktik Pizza, İtalyan mutfağından dünya çapında tanınan, hamur tabanı üzerine mozarella peyniri, domates sosu ve çeşitli malzemelerin eklenmesiyle hazırlanan lezzetli bir yemektir. Sıcak servis edilir ve çeşitli restoranlarda veya fast food zincirlerinde bulamazsınız. ",
-      img: "../assets/food-1.png"
-      },
+      img: "../assets/food-1.png",
+    },
     {
       id: 2,
       name: "Techno",
       price: 99,
+      currency: "TL",
       sugest:
         "Techno Pizza, hamur tabanı üzerine eklenen mozarella peyniri, domates sosu, sebzeler ve et ürünleri gibi çeşitli malzemelerle hazırlanan, dünya genelinde sevilen bir İtalyan yemeğidir. Pizza hamuru, ince ve çıtır bir kıvama sahiptir ve fırınlanarak hazırlanır. Dilimlenerek servis edilir ve yanında soslar, biberonlu şeker, kekik veya kırmızı biber gibi baharatlar sunulabilir.",
-      img: "../assets/food-2.png"
+      img: "../assets/food-2.png",
     },
     {
       id: 3,
       name: "Travis",
       price: 109,
+      currency: "TL",
       sugest:
         "Travis Pizza, hemen hemen herkesin sevdiği bir yemektir. Hamur tabanı, domates sosu, mozarella peyniri ve çeşitli malzemelerle hazırlanır. Malzemeler arasında salam, sosis, jambon, mantar, biber, soğan, mısır gibi sebzeler ve peynir çeşitleri yer alabilir. Pizza, sıcak servis edilir ve genellikle dilimlenerek servis edilir. Ayrıca, kişisel tercihlerine göre malzemeler değiştirilebilir veya pizza çeşitleri de farklılık gösterebilir.",
-      img: "../assets/food-1.png"
-      },
+      img: "../assets/food-1.png",
+    },
   ]);
   const [orderPizza, setOrderPizza] = useState({
-    id: 1,
-    name: "Galaktik",
-    price: 89,
+    id: "",
+    name: "",
+    price: 0,
     boyut: "",
     hamur: "",
     text: "",
     count: 1,
     secimler: "",
-    totalPrice: "",
+    totalPrice: 0,
     ekMalzemeler: "",
     sugest: "",
+    currency: "",
   });
   const [formErrors, setFormErrors] = useState({
     id: "",
@@ -97,6 +99,7 @@ const Order = (props) => {
   const [totalPrice, setTotalPrice] = useState(orderPizza.price);
   const lastPrice = totalPrice * counter;
   const [ekMalzemeler, setEkMalzemeler] = useState([]);
+  const [disableButton, setDisableButton] = useState(true);
   /* const ekMalzemes= []; */
 
   const perCost = 5;
@@ -105,10 +108,11 @@ const Order = (props) => {
   const orderFormSchema = Yup.object().shape({
     boyut: Yup.string().required("Pizza boyutunu seçmek zorunlu"),
     hamur: Yup.string().required("Pizza hamurunu seçmek zorunlu"),
-    ekMalzemeler: Yup.array()
+    /* ekMalzemeler: Yup.array()
       .length()
-      .min(4, "en az 4 seçim"),
+      .min(4, "en az 4 seçim"), */
     text: Yup.string().required("Sipariş notu girin"),
+    name:Yup.string().required("Hangi pizzayı yemek istersiniz")
   });
   const selectPizza = (e) => {
     console.log(pizza[e.target.id - 1]);
@@ -119,7 +123,17 @@ const Order = (props) => {
       price: pizza[e.target.id - 1].price,
       id: pizza[e.target.id - 1].id,
       sugest: pizza[e.target.id - 1].sugest,
+      currency: pizza[e.target.id - 1].currency,
     });
+    Yup.reach(orderFormSchema, pizza.name)
+      .validate(e.target.value)
+      .then((valid) => {
+        setFormErrors({ ...formErrors, [e.target.name]: "" });
+      })
+      .catch((err) => {
+        setFormErrors({ ...formErrors, [e.target.name]: err.errors[0] });
+      });
+    
   };
 
   const setCheck = (e) => {
@@ -166,12 +180,17 @@ const Order = (props) => {
 
   useEffect(() => {
     console.log(">>>>>>>>>>>>>", orderPizza);
+    orderFormSchema.isValid(orderPizza).then((valid) => setDisableButton(!valid)); 
   }, [orderPizza]);
 
   useEffect(() => {
     console.log("counter", counter);
     setOrderPizza({ ...orderPizza, count: counter });
   }, [counter]);
+
+  useEffect(() => {
+    setTotalPrice(orderPizza.price)
+  }, [orderPizza.price]);
 
   useEffect(() => {
     setOrderPizza({
@@ -184,28 +203,29 @@ const Order = (props) => {
 
   return (
     <div className="d-flex flex-column mt-4 ">
-      
       <div className="d-flex flex-row justify-content-center flex-wrap  ">
         {pizza.map((e, index) => {
           return (
             <Card
-            className="mx-2"
+              className="mx-2"
               key={e.id}
               for={e.id}
               style={{
                 width: "18rem",
               }}
             >
-              <img alt="Sample" src={require(`../assets/food-${e.id}.png` )}/>
+              <img alt="Sample" src={require(`../assets/food-${e.id}.png`)} />
               <CardBody className="m-1">
-                <CardTitle className="text-center" tag="h5">{e.name}</CardTitle>
+                <CardTitle className="text-center" tag="h5">
+                  {e.name}
+                </CardTitle>
                 <CardSubtitle className="mb-2 text-muted" tag="h6">
                   {e.price} TL
                 </CardSubtitle>
                 <CardText className="fst-italic">{e.sugest}</CardText>
-                
-    
-                <Button className=""
+
+                <Button
+                  className=""
                   id={e.id}
                   type="button"
                   name={e.name}
@@ -213,25 +233,21 @@ const Order = (props) => {
                 >
                   SEÇ
                 </Button>
-  
               </CardBody>
             </Card>
           );
-          
         })}
-        </div>
-        <div style={{
-      width:"40%",
-      margin:"2rem 30%",
-      
-      
-    }}>
+      </div>
+      <div className="order-container"
+        style={{
+          width: "40%",
+          margin: "2rem 30%",
+        }}
+      >
         <div className="shadow-sm p-3 mb-1 bg-body rounded">
           <h3 className="text-center m-3"> {orderPizza.name} </h3>
-          <div className="fw-semibold ">{orderPizza.price} TL </div>
-          <p className="fst-italic ">
-          {orderPizza.sugest}
-          </p>
+          <div className="fw-semibold ">{orderPizza.price} {orderPizza.currency} </div>
+          <p className="fst-italic ">{orderPizza.sugest}</p>
         </div>
         <Form onSubmit={submitHandler}>
           <FormGroup className="d-flex p-2 bd-highlight justify-content-between d-grid gap-2 ">
@@ -243,7 +259,6 @@ const Order = (props) => {
               style={{ width: "50%" }}
             >
               <legend>Boyut Seç</legend>
-
               <FormGroup check>
                 <Input
                   name="boyut"
@@ -252,7 +267,7 @@ const Order = (props) => {
                   value="Küçük"
                   onChange={changeHandler}
                 />{" "}
-                <Label check>Küçük Boy</Label>
+                <Label check for="size-dropdown">Küçük Boy</Label>
               </FormGroup>
               <FormGroup check>
                 <Input
@@ -262,7 +277,7 @@ const Order = (props) => {
                   value="Orta"
                   onChange={changeHandler}
                 />{" "}
-                <Label check>Orta Boy</Label>
+                <Label check for="size-dropdown">Orta Boy</Label>
               </FormGroup>
               <FormGroup check>
                 <Input
@@ -272,7 +287,7 @@ const Order = (props) => {
                   value="Büyük"
                   onChange={changeHandler}
                 />{" "}
-                <Label check>Büyük Boy</Label>
+                <Label check for="size-dropdown">Büyük Boy</Label>
               </FormGroup>
               <FormFeedback>{formErrors.boyut}</FormFeedback>
             </FormGroup>
@@ -288,7 +303,6 @@ const Order = (props) => {
                 <DropdownItem header id="hamur-type">
                   Hamur Kalınlığı
                 </DropdownItem>
-
                 <DropdownItem
                   name="hamur"
                   value="İnce"
@@ -371,13 +385,13 @@ const Order = (props) => {
                 <br></br>
                 <span>Toplam: {lastPrice} TL </span>
               </CardText>
-              <Button id="order-button" type="submit" color="warning">
+              <Button id="order-button" type="submit" color="warning" disabled={disableButton}>
                 SİPARİŞ VER
               </Button>
             </Card>
           </FormGroup>
         </Form>
-        </div>
+      </div>
     </div>
   );
 };
