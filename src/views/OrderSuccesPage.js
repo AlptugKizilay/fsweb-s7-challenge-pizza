@@ -32,14 +32,15 @@ const OrderSuccesPage = ({ siparis }) => {
     return <h1>Loading...</h1>;
   } else {
     return (
-      <div className="d-flex flex-column align-items-center" style={{width:"60%", margin:".1rem 20%"}}>
+      
+      <div className="d-flex flex-column align-items-center" style={{width:"60%", margin:".1rem 20%",}}>
         <h2 style={{fontSize: "3.5rem",
             fontWeight: "bolder",
-            color: "white",
-            fontFamily: "Satisfy, cursive",}} >Teknolojik Yemekler</h2>
+            color: "#45171d",
+            }} >Teknolojik Yemekler</h2>
         
-        <h4 style={{fontFamily: "Satisfy, cursive",}}>lezzetin yolda</h4>
-        <h2>Sipariş Alındı</h2>
+        <h4 style={{fontFamily: "Satisfy, cursive", margin:"2rem"}}>lezzetin yolda</h4>
+        <h2 className="border border-ligth rounded-5 p-3 mb-2 bg-success text-white">Sipariş Alındı</h2>
        
 
         <hr></hr>
@@ -64,7 +65,7 @@ const OrderSuccesPage = ({ siparis }) => {
         </div>
         <Card
           body
-          className="my-2"
+          className="m-4"
           style={{
             width: "15rem",
           }}
@@ -81,6 +82,8 @@ const OrderSuccesPage = ({ siparis }) => {
           </CardText>
         </Card>
       </div>
+      
+
     );
   }
 };

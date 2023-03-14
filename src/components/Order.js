@@ -16,6 +16,7 @@ import {
   FormFeedback,
   CardBody,
   CardSubtitle,
+  CardFooter
 } from "reactstrap";
 import Counter from "./Counter";
 import axios from "axios";
@@ -182,12 +183,13 @@ const Order = (props) => {
   }, [totalPrice]);
 
   return (
-    <div className="d-flex flex-column ">
+    <div className="d-flex flex-column mt-4 ">
       
-      <div className="d-flex flex-row justify-content-center flex-wrap ">
+      <div className="d-flex flex-row justify-content-center flex-wrap  ">
         {pizza.map((e, index) => {
           return (
             <Card
+            className="mx-2"
               key={e.id}
               for={e.id}
               style={{
@@ -195,13 +197,15 @@ const Order = (props) => {
               }}
             >
               <img alt="Sample" src={require(`../assets/food-${e.id}.png` )}/>
-              <CardBody>
-                <CardTitle tag="h5">{e.name}</CardTitle>
+              <CardBody className="m-1">
+                <CardTitle className="text-center" tag="h5">{e.name}</CardTitle>
                 <CardSubtitle className="mb-2 text-muted" tag="h6">
                   {e.price} TL
                 </CardSubtitle>
-                <CardText>{e.sugest}</CardText>
-                <Button
+                <CardText className="fst-italic">{e.sugest}</CardText>
+                
+    
+                <Button className=""
                   id={e.id}
                   type="button"
                   name={e.name}
@@ -209,6 +213,7 @@ const Order = (props) => {
                 >
                   SEÇ
                 </Button>
+  
               </CardBody>
             </Card>
           );
@@ -222,9 +227,9 @@ const Order = (props) => {
       
     }}>
         <div className="shadow-sm p-3 mb-1 bg-body rounded">
-          <h3 className="text-center"> {orderPizza.name} </h3>
-          <div>{orderPizza.price} TL </div>
-          <p>
+          <h3 className="text-center m-3"> {orderPizza.name} </h3>
+          <div className="fw-semibold ">{orderPizza.price} TL </div>
+          <p className="fst-italic ">
           {orderPizza.sugest}
           </p>
         </div>
