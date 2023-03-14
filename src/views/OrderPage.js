@@ -13,7 +13,7 @@ const OrderPage = ({siparis}) => {
   console.log("siparis orderpage " , sipariss);
   siparis(sipariss);
 
-  /* siparis(sipariss) */
+  
   return (
     <div className="d-flex flex-column mb-2 justify-content-center" >
       <div className="header">
