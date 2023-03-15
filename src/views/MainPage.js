@@ -51,6 +51,7 @@ const MainPage = () => {
             margin: "2rem",
             fontWeight: "bolder",
           }}
+          data-test-id = "main-order-button"
         >
           SİPARİŞ VER
         </Button>
