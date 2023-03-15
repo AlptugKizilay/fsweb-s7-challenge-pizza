@@ -64,6 +64,7 @@ const Order = (props) => {
     ekMalzemeler: "",
     sugest: "",
     currency: "",
+    
   });
   const [formErrors, setFormErrors] = useState({
     id: "",
@@ -100,7 +101,7 @@ const Order = (props) => {
   const lastPrice = totalPrice * counter;
   const [ekMalzemeler, setEkMalzemeler] = useState([]);
   const [disableButton, setDisableButton] = useState(true);
-  /* const ekMalzemes= []; */
+ 
 
   const perCost = 5;
   const navigate = useNavigate();
@@ -111,7 +112,7 @@ const Order = (props) => {
     ekMalzemeler: Yup.
       array().required().min(4,"En az 4 seçim"),
     text: Yup.string().required("Sipariş notu girin"),
-    name:Yup.string().required("Hangi pizzayı yemek istersiniz")
+    name:Yup.string().required("Pizza seçimi yapmak zorunlu")
   });
   const selectPizza = (e) => {
     console.log(pizza[e.target.id - 1]);
@@ -134,9 +135,7 @@ const Order = (props) => {
       });
     
   };
-  const removeFalse = (e) =>{
-    
-  }
+  
   const setCheck = (e) => {
     setOrderPizza({ ...orderPizza, [e.target.name]: e.target.checked });
 
@@ -151,8 +150,7 @@ const Order = (props) => {
     }
   };
   const changeHandler = (e) => {
-    setOrderPizza({ ...orderPizza, [e.target.name]: e.target.value });
-
+    setOrderPizza({ ...orderPizza, [e.target.name]: e.target.value });   
     Yup.reach(orderFormSchema, e.target.name)
       .validate(e.target.value)
       .then((valid) => {
@@ -164,9 +162,7 @@ const Order = (props) => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-
     props.siparisss(orderPizza);
-
     axios
       .post("https://75e9o.mocklab.io/json/1", orderPizza)
       .then((response) => {
@@ -180,9 +176,9 @@ const Order = (props) => {
     console.log("ekMalzemeler", ekMalzemeler);
   }, [ekMalzemeler]);
   
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("formErrors",formErrors);
-  }, [formErrors]);
+  }, [formErrors]); */
 
   useEffect(() => {
     console.log(">>>>>>>>>>>>>", orderPizza);
@@ -322,6 +318,7 @@ const Order = (props) => {
                   value="Orta"
                   id="hamur-type"
                   onClick={changeHandler}
+                 
                 >
                   Orta Hamur
                 </DropdownItem>
@@ -345,6 +342,7 @@ const Order = (props) => {
           <FormGroup className="shadow-sm p-3 mb-1 bg-body rounded">
             <h4>Ek Malzemeler:</h4>
             <p>En Fazla 10 malzeme seçebilrisiniz. 5tl</p>
+            {/* {formErrors.ekMalzemeler && (<FormFeedback>{formErrors.ekMalzemeler}</FormFeedback>)} */}
             <FormFeedback>{formErrors.ekMalzemeler}</FormFeedback>
 
             {malzemeler.map((e, index) => {
@@ -355,6 +353,7 @@ const Order = (props) => {
                     name={e}
                     key={index}
                     onChange={setCheck}
+                    
                   />
                   <Label check>{e}</Label>
                 </FormGroup>
