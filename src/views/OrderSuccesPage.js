@@ -65,13 +65,7 @@ const OrderSuccesPage = ({ siparis }) => {
             </NavLink>
           </NavItem>
         </Nav>
-        {/* <img
-          className="main-Banner"
-          src={require("../assets/esnek-form-banner.png")}
-          style={{
-            marginTop: "15rem",
-          }}
-        /> */}
+        
         <img
           className="main-Banner"
           src={require("../assets/banner.png")}

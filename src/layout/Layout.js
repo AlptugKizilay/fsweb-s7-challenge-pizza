@@ -11,7 +11,7 @@ const Layout = () => {
   const[siparis,setSiparis] = useState();
   const siparisDetail = (e) => {
     setSiparis(e);
-    console.log("siparisLayout ", siparis);
+    /* console.log("siparisLayout ", siparis); */
     
   }
 

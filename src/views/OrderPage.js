@@ -10,7 +10,7 @@ import {
 const OrderPage = ({siparis}) => {
   const [sipariss, setSipariss] = useState();
 
-  console.log("siparis orderpage " , sipariss);
+  /* console.log("siparis orderpage " , sipariss); */
   siparis(sipariss);
 
   

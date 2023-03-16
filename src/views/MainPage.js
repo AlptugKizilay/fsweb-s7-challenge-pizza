@@ -1,13 +1,10 @@
 import React from "react";
 import { Button, Form } from "reactstrap";
-import background from "../assets/mvp-banner.png";
 
 const MainPage = () => {
   return (
-    <div
-      className="d-flex flex-column align-items-center"
+    <div className="d-flex flex-column align-items-center"
       style={{
-        /* backgroundImage: `url(${background})`, */
         height: "100vh",
         maxWidth: "100vw",
         maxHeight: "100vh",
@@ -51,7 +48,7 @@ const MainPage = () => {
             margin: "2rem",
             fontWeight: "bolder",
           }}
-          data-test-id = "main-order-button"
+          data-test-id="main-order-button"
         >
           SİPARİŞ VER
         </Button>

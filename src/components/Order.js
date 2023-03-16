@@ -101,11 +101,9 @@ const Order = (props) => {
   const lastPrice = totalPrice * counter;
   const [ekMalzemeler, setEkMalzemeler] = useState([]);
   const [disableButton, setDisableButton] = useState(true);
- 
-
   const perCost = 5;
   const navigate = useNavigate();
-
+ 
   const orderFormSchema = Yup.object().shape({
     boyut: Yup.string().required("Pizza boyutunu seçmek zorunlu"),
     hamur: Yup.string().required("Pizza hamurunu seçmek zorunlu"),
@@ -114,10 +112,9 @@ const Order = (props) => {
     text: Yup.string().required("Sipariş notu girin"),
     name:Yup.string().required("Pizza seçimi yapmak zorunlu")
   });
-  const selectPizza = (e) => {
-    console.log(pizza[e.target.id - 1]);
-    
 
+  const selectPizza = (e) => {
+    /* console.log(pizza[e.target.id - 1]); */  
     setOrderPizza({
       ...orderPizza,
       name: pizza[e.target.id - 1].name,
@@ -137,6 +134,7 @@ const Order = (props) => {
     
   };
   
+  
   const setCheck = (e) => {
     setOrderPizza({ ...orderPizza, [e.target.name]: e.target.checked });
 
@@ -147,7 +145,9 @@ const Order = (props) => {
     } else {
       setMalzemeSayaci(malzemeSayaci - 1);
       setTotalPrice(totalPrice - perCost);
-      ekMalzemeler.pop();
+      
+      let deleteEkMalzemeler = ekMalzemeler.filter(item => item !== e.target.name);
+      setEkMalzemeler(deleteEkMalzemeler);
     }
   };
   const changeHandler = (e) => {
