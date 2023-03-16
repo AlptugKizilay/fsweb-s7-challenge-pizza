@@ -5,7 +5,7 @@ import axios from "axios";
 const OrderSuccesPage = ({ siparis }) => {
   const [lastSiparis, setLastSiparis] = useState({
     id: 1,
-    name: "Galaktik",
+    name: "",
     price: 0,
     boyut: "",
     hamur: "",
@@ -15,11 +15,12 @@ const OrderSuccesPage = ({ siparis }) => {
     totalPrice: "",
   });
   console.log("sucseeses", siparis);
-
   axios
     .get("https://75e9o.mocklab.io/json/1")
     .then((res) => {
-      setLastSiparis(siparis);
+      if (siparis != null) {
+        setLastSiparis(siparis);
+      }
     })
     .catch((err) => {
       console.error(
@@ -29,7 +30,57 @@ const OrderSuccesPage = ({ siparis }) => {
     });
 
   if (lastSiparis.price === 0) {
-    return <h1>Loading...</h1>;
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          fontFamily: "Barlow, sans-serif",
+          background: "#155263",
+          fontWeight: "bolder",
+          color: "white",
+        }}
+      >
+        <h1>Burada bir şey yok... </h1>
+        <h2>Ama sipariş oluşturursan olur...</h2>
+        <Nav card fill justified className="border border-start-0 border-end-0">
+          <NavItem>
+            <NavLink
+              active
+              href="/"
+              className="p-3 mb-2 "
+              style={{ color: "#f6c667", fontWeight: "bolder" }}
+            >
+              Anasayfa
+            </NavLink>
+          </NavItem>
+
+          <NavItem>
+            <NavLink
+              active
+              href="/order-pizza"
+              className="p-3 mb-2 "
+              style={{ color: "#f6c667", fontWeight: "bolder" }}
+            >
+              Sipariş Oluştur
+            </NavLink>
+          </NavItem>
+        </Nav>
+        {/* <img
+          className="main-Banner"
+          src={require("../assets/esnek-form-banner.png")}
+          style={{
+            marginTop: "15rem",
+          }}
+        /> */}
+        <img
+          className="main-Banner"
+          src={require("../assets/banner.png")}
+          style={{
+            marginTop: "14rem",
+          }}
+        />
+      </div>
+    );
   } else {
     return (
       <div

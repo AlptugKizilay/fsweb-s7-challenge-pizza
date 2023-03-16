@@ -17,7 +17,7 @@ const Counter = (props) => {
       width: "9rem",
       height: "3rem",
     }}>
-      <Button className="" color="warning" onClick={azalt}
+      <Button className="" color="warning" onClick={azalt} data-cy="decrease"
       style={{
         width: "3rem",
         height: "3rem",
@@ -29,7 +29,7 @@ const Counter = (props) => {
         height: "3rem",
         textAlign: "center"
       }}>{count}</p>
-      <Button className="" color="warning" onClick={arttir}
+      <Button className="" color="warning" onClick={arttir} data-cy="increase"
       style={{
         width: "3rem",
         height: "3rem",

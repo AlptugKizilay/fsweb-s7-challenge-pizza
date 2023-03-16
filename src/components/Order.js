@@ -25,11 +25,11 @@ const Order = (props) => {
   const [pizza, setPizza] = useState([
     {
       id: 1,
-      name: "Galaktik",
+      name: "Kopernik",
       price: 89,
       currency: "TL",
       sugest:
-        "Galaktik Pizza, İtalyan mutfağından dünya çapında tanınan, hamur tabanı üzerine mozarella peyniri, domates sosu ve çeşitli malzemelerin eklenmesiyle hazırlanan lezzetli bir yemektir. Sıcak servis edilir ve çeşitli restoranlarda veya fast food zincirlerinde bulamazsınız. ",
+        "Kopernik Pizza, İtalyan mutfağından dünya çapında tanınan, hamur tabanı üzerine mozarella peyniri, domates sosu ve çeşitli malzemelerin eklenmesiyle hazırlanan lezzetli bir yemektir. Sıcak servis edilir ve çeşitli restoranlarda veya fast food zincirlerinde bulamazsınız. ",
       img: "../assets/food-1.png",
     },
     {
@@ -116,6 +116,7 @@ const Order = (props) => {
   });
   const selectPizza = (e) => {
     console.log(pizza[e.target.id - 1]);
+    
 
     setOrderPizza({
       ...orderPizza,
@@ -157,6 +158,7 @@ const Order = (props) => {
         setFormErrors({ ...formErrors, [e.target.name]: "" });
       })
       .catch((err) => {
+        console.log(err.errors);
         setFormErrors({ ...formErrors, [e.target.name]: err.errors[0] });
       });
   };
@@ -232,6 +234,7 @@ const Order = (props) => {
                   type="button"
                   name={e.name}
                   onClick={selectPizza}
+                  data-cy = {e.id}
                 >
                   SEÇ
                 </Button>
@@ -247,8 +250,8 @@ const Order = (props) => {
         }}
       >
         <div className="shadow-sm p-3 mb-1 bg-body rounded">
-          <h3 className="text-center m-3"> {orderPizza.name} </h3>
-          <div className="fw-semibold ">{orderPizza.price} {orderPizza.currency} </div>
+          <h3 data-cy="test-pizza-name" className="text-center m-3"> {orderPizza.name} </h3>
+          <div data-cy="test-pizza-price" className="fw-semibold ">{orderPizza.price} {orderPizza.currency} </div>
           <p className="fst-italic ">{orderPizza.sugest}</p>
         </div>
         <Form onSubmit={submitHandler}>
@@ -268,6 +271,7 @@ const Order = (props) => {
                   id="size-dropdown"
                   value="Küçük"
                   onChange={changeHandler}
+                  data-cy = "radio1"
                 />{" "}
                 <Label check htmlFor="size-dropdown">Küçük Boy</Label>
               </FormGroup>
@@ -278,6 +282,7 @@ const Order = (props) => {
                   id="size-dropdown"
                   value="Orta"
                   onChange={changeHandler}
+                  data-cy = "radio2"
                 />{" "}
                 <Label check htmlFor="size-dropdown">Orta Boy</Label>
               </FormGroup>
@@ -288,17 +293,18 @@ const Order = (props) => {
                   id="size-dropdown"
                   value="Büyük"
                   onChange={changeHandler}
+                  data-cy = "radio3"
                 />{" "}
                 <Label check htmlFor="size-dropdown">Büyük Boy</Label>
               </FormGroup>
-              <FormFeedback>{formErrors.boyut}</FormFeedback>
+              <FormFeedback data-cy= "radio-error">{formErrors.boyut}</FormFeedback>
             </FormGroup>
 
             <UncontrolledDropdown
               className="shadow-sm p-3 mb-1 bg-body rounded"
               style={{ width: "50%" }}
             >
-              <DropdownToggle caret color="ligth">
+              <DropdownToggle caret color="ligth" data-cy="toggle-dd">
                 <strong>Hamur Seç</strong>
               </DropdownToggle>
               <DropdownMenu>
@@ -310,6 +316,7 @@ const Order = (props) => {
                   value="İnce"
                   id="hamur-type"
                   onClick={changeHandler}
+                  data-cy = "dropdown1"
                 >
                   İnce Hamur
                 </DropdownItem>
@@ -318,7 +325,7 @@ const Order = (props) => {
                   value="Orta"
                   id="hamur-type"
                   onClick={changeHandler}
-                 
+                  data-cy = "dropdown2"
                 >
                   Orta Hamur
                 </DropdownItem>
@@ -327,6 +334,7 @@ const Order = (props) => {
                   value="Kalın"
                   id="hamur-type"
                   onClick={changeHandler}
+                  data-cy = "dropdown3"
                 >
                   Kalın Hamur
                 </DropdownItem>
@@ -341,9 +349,9 @@ const Order = (props) => {
 
           <FormGroup className="shadow-sm p-3 mb-1 bg-body rounded">
             <h4>Ek Malzemeler:</h4>
-            <p>En Fazla 10 malzeme seçebilrisiniz. 5tl</p>
+            <p>En az 4 malzeme seçiniz. <strong>5TL</strong> </p>
             {/* {formErrors.ekMalzemeler && (<FormFeedback>{formErrors.ekMalzemeler}</FormFeedback>)} */}
-            <FormFeedback>{formErrors.ekMalzemeler}</FormFeedback>
+            <FormFeedback className="error">{formErrors.ekMalzemeler}</FormFeedback>
 
             {malzemeler.map((e, index) => {
               return (
@@ -353,6 +361,7 @@ const Order = (props) => {
                     name={e}
                     key={index}
                     onChange={setCheck}
+                    data-cy-checkbox={index}
                     
                   />
                   <Label check>{e}</Label>
@@ -390,7 +399,8 @@ const Order = (props) => {
                 <br></br>
                 <span>Toplam: {lastPrice} TL </span>
               </CardText>
-              <Button id="order-button" type="submit" color="warning" disabled={disableButton}>
+              <Button id="order-button" type="submit" color="warning" disabled={disableButton}
+              data-cy="order-button">
                 SİPARİŞ VER
               </Button>
             </Card>
